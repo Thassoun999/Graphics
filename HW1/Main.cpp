@@ -1,10 +1,11 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
 using namespace std;
 
-#ifdef __APPLE__  // include Mac OS X verions of headers
+#ifdef _APPLE_  // include Mac OS X verions of headers
 #include <GLUT/glut.h>
 #else // non-Mac OS X operating systems
 #include <GL/glut.h>
@@ -19,8 +20,12 @@ void display(void);
 void myinit(void);
 void draw_circle(int x, int y, int r);
 void circlePoint(int x, int y);
-int floorSqrt(int dist);
 void idle(void);
+void chooseFunction(void);
+void functionC(void);
+void functionDE(void);
+char input;
+void file_in(string doc);
 
 int x;
 int y;
@@ -35,7 +40,7 @@ double k = 5000;
 
 
 /* Function to handle file input; modification may be needed */
-void file_in(void);
+//void file_in(void);
 
 
 struct myCoords {
@@ -55,18 +60,7 @@ int main(int argc, char **argv)
 
 	MOVED TO FILEIN()
 
-	std::cout << "Enter the radius: ";
-	std::cin >> r;
-	std::cout << std::endl;
-
-	std::cout << "Enter origin x coordinate: ";
-	std::cin >> x;
-	std::cout << std::endl;
-
-	std::cout << "Enter origin y coordinate: ";
-	std::cin >> y;
-	std::cout << std::endl;
-	*/ 
+	*/
 	glutInit(&argc, argv);
 
 	/* Use both double buffering and Z buffer */
@@ -77,9 +71,10 @@ int main(int argc, char **argv)
 	glutCreateWindow("CS6533/CS4533 Assignment 1");
 
 	glutDisplayFunc(display);
-	
+
 	/* Function call to handle file input here */
-	file_in();
+	//file_in();
+	chooseFunction();
 	glutIdleFunc(idle);
 	myinit();
 	glutMainLoop();
@@ -87,13 +82,50 @@ int main(int argc, char **argv)
 	return 0;
 }
 
+/*-------------------------------------------------------------------------------
+ FunctionC(): part c
+ ---------------------------------------------------------------------------------*/
+
+void functionC() {
+	cout << "Enter the desired x value: ";
+	cin >> x;
+	cout << "Enter the desired y value: ";
+	cin >> y;
+	cout << "Enter the desired radius: ";
+	cin >> r;
+	//draw_circle(x, y, r);
+	return;
+}
+
+/*-------------------------------------------------------------------------------
+ FunctionDE(): part d and e
+ ---------------------------------------------------------------------------------*/
+void functionDE() {
+	string fileName;
+	cout << "Input File Name (Ex: Example.txt): " << endl;
+	cin >> fileName;
+	file_in(fileName);
+}
+
+/*-------------------------------------------------------------------------------
+chooseFunction(): Pick which part to do
+ ---------------------------------------------------------------------------------*/
+void chooseFunction()
+{
+	cout << "Choose option 'c', 'd' or 'e'" << endl;
+	cin >> input;
+	if (input == 'c') { functionC(); }
+	else if (input == 'd' || input == 'e') { functionDE(); }
+	else { cout << "This is not a valid option; Please us any of c, d, or e" << endl; }
+}
+
 /*----------
 file_in(): file input function. Modify here.
 ------------*/
-void file_in(void)
+void file_in(string document)
 {
 	ifstream myfile;
-	myfile.open("Example.txt");
+	myfile.open(document.c_str());
 	if (!myfile) {
 		cerr << "Unable to open file datafile.txt";
 		exit(1);   // call system to stop
@@ -109,7 +141,7 @@ void file_in(void)
 		worldCordinates.xcoords.push_back(xtemp);
 		worldCordinates.ycoords.push_back(ytemp);
 		worldCordinates.rcoords.push_back(rtemp);
-		
+
 	}
 
 
@@ -118,22 +150,37 @@ void file_in(void)
 
 
 /*---------------------------------------------------------------------
-display(): This function is called once for _every_ frame.
+display(): This function is called once for every frame.
 ---------------------------------------------------------------------*/
 void display(void)
 {
-		
-		
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glColor3f(1.0, 0.84, 0);              /* draw in golden yellow */
-		glPointSize(1.0);                     /* size of each point */
 
-		glBegin(GL_POINTS);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	glColor3f(1.0, 0.84, 0);              /* draw in golden yellow */
+	glPointSize(1.0);                     /* size of each point */
+
+	glBegin(GL_POINTS);
+
+	if (input == 'c') {
+		draw_circle(x, y, r);
+	}
+	else if (input == 'd') {
+		for (int i = 0; i < numberOfLoops; ++i) {
+			//double finscale = framenum / k; //percentage
+			//cout << finscale << " ";
+			x = (worldCordinates.xcoords[i] / scale) + WINDOW_WIDTH / 2;
+			y = (worldCordinates.ycoords[i] / scale) + WINDOW_HEIGHT / 2;
+			r = (worldCordinates.rcoords[i] / scale);
+			//cout << x << " " << y << " " << r << endl;
+			draw_circle(x, y, r);				  /* draw our circle */
+		}
+	}
+	else if (input == 'e') {
 		//glVertex2i(300, 300);               /* draw a vertex here */
 		for (int i = 0; i < numberOfLoops; ++i) {
-			double finscale =  framenum / k;
+			double finscale = framenum / k; //percentage
 			//cout << finscale << " ";
 			x = (worldCordinates.xcoords[i] / scale) + WINDOW_WIDTH / 2;
 			y = (worldCordinates.ycoords[i] / scale) + WINDOW_HEIGHT / 2;
@@ -143,12 +190,15 @@ void display(void)
 		}
 
 		//circlePoint(x, y);				  /* Test for Circle Point */	
-		glEnd();
+	}
 
-		glFlush();                            /* render graphics */
-
-		glutSwapBuffers();                    /* swap buffers */
 	
+	glEnd();
+
+	glFlush();                            /* render graphics */
+
+	glutSwapBuffers();                    /* swap buffers */
+
 }
 
 /*---------------------------------------------------------------------
@@ -199,7 +249,7 @@ void circlePoint(int xtemp, int ytemp) {
 	glVertex2i(centerX - ytemp, centerY + xtemp);
 	glVertex2i(centerX + ytemp, centerY - xtemp);
 
-	
+
 }
 
 
@@ -226,4 +276,3 @@ void draw_circle(int x, int y, int r) {
 		circlePoint(xtemp, ytemp);
 	}
 }
-
