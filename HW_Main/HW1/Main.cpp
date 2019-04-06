@@ -70,11 +70,12 @@ int main(int argc, char **argv)
 	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	glutCreateWindow("CS6533/CS4533 Assignment 1");
 
+	chooseFunction();
 	glutDisplayFunc(display);
 
 	/* Function call to handle file input here */
 	//file_in();
-	chooseFunction();
+	
 	glutIdleFunc(idle);
 	myinit();
 	glutMainLoop();
@@ -244,6 +245,7 @@ void circlePoint(int xtemp, int ytemp) {
 	glVertex2i(centerX - xtemp, centerY - ytemp);
 	glVertex2i(centerX - xtemp, centerY + ytemp);
 	glVertex2i(centerX + xtemp, centerY - ytemp);
+
 	glVertex2i(centerX + ytemp, centerY + xtemp);
 	glVertex2i(centerX - ytemp, centerY - xtemp);
 	glVertex2i(centerX - ytemp, centerY + xtemp);
