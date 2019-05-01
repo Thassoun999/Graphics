@@ -172,7 +172,9 @@
     <ClCompile Include="sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="sphere1024.txt" />
     <Text Include="sphere128.txt" />
+    <Text Include="sphere256.txt" />
     <Text Include="sphere8.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

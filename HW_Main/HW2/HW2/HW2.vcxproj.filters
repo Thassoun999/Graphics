@@ -49,5 +49,11 @@
     <Text Include="sphere128.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="sphere256.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sphere1024.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
