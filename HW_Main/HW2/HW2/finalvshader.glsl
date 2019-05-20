@@ -1,4 +1,4 @@
-#version 130
+//#version 130
 
 in  vec4 vPosition;
 in  vec3 vNormal;
@@ -50,9 +50,9 @@ uniform int draw_shadow_lat;
 
 void main()
 {
-    fog_f=fog_flag;
+        fog_f=fog_flag;
 	vec3 tmp_eye_pos=(ModelView*vec4(7.0, 3.0, -10.0,1.0)).xyz;
-    vec3 pos = (ModelView * vPosition).xyz;
+        vec3 pos = (ModelView * vPosition).xyz;
 	fog_d=length(pos-tmp_eye_pos);
 
 	float tmp_a=vPosition[0];
@@ -61,92 +61,146 @@ void main()
 
 	if(draw_shadow_lat==1)
 	{
-	if(eye_space_flag==1)
-	{
-	if(upright_lat_flag==1)
-	  {lat_Coord[0]=(pos[0]+1)*0.5;lat_Coord[1]=(pos[1]+1)*0.5;}
-	else
-	  {lat_Coord[0]=(pos[0]+pos[1]+pos[2])*0.3;lat_Coord[1]=(pos[0]-pos[1]+pos[2])*0.3;}
-	}
-	else if(object_space_flag==1)
-	{
-	 if(upright_lat_flag==0)
-	 {lat_Coord[0]=(tmp_a+1)*0.5;lat_Coord[1]=(tmp_b+1)*0.5;}
-	 else
-	 {lat_Coord[0]=(tmp_a+tmp_b+tmp_c)*0.3;lat_Coord[1]=(tmp_a-tmp_b+tmp_c)*0.3;}
-	}
+		if(eye_space_flag == 1)
+		{
+			if(upright_lat_flag==1)
+	  		{
+				lat_Coord[0] = (pos[0] + 1) * 0.5;
+				lat_Coord[1] = (pos[1] + 1) * 0.5;
+			}
+			else
+	  		{
+				lat_Coord[0] = (pos[0] + pos[1] + pos[2]) * 0.3; 
+				lat_Coord[1] = (pos[0] - pos[1] + pos[2]) * 0.3;
+			} 
+		}
+		else if(object_space_flag == 1)
+		{
+	 		if(upright_lat_flag == 0)
+	 		{ 
+				lat_Coord[0]=(tmp_a + 1) * 0.5;
+				lat_Coord[1]=(tmp_b + 1) * 0.5;
+			}
+			else
+			{
+				lat_Coord[0]=(tmp_a + tmp_b + tmp_c) * 0.3;
+				lat_Coord[1]=(tmp_a - tmp_b + tmp_c) * 0.3;
+			}
+		}
 	}
 
 	if(sphere_line_flag==1)
 	{
-	if(eye_space_flag==1)
-	{
-	if(vertical_flag==1)
-	  { float_texture=pos[0]*2.5;}
-    if(slant_flag==1)
-	  { float_texture=1.5*(pos[0]+pos[1]+pos[2]);}
+		if(eye_space_flag==1)
+		{
+			if(vertical_flag==1)
+	  		{ 
+				float_texture = pos[0] * 2.5;
+			}
+    			if(slant_flag==1)
+	  		{ 
+				float_texture = 1.5*(pos[0] + pos[1] + pos[2]);
+			}
 
-	if(upright_lat_flag==1)
-	  {lat_Coord[0]=(pos[0]+1)*0.5;lat_Coord[1]=(pos[1]+1)*0.5;}
-	else
-	  {lat_Coord[0]=(pos[0]+pos[1]+pos[2])*0.3;lat_Coord[1]=(pos[0]-pos[1]+pos[2])*0.3;}
+			if(upright_lat_flag==1)
+	 		{
+				lat_Coord[0] = ( pos[0] + 1) * 0.5;
+				lat_Coord[1] = (pos[1] + 1) * 0.5;
+			}
+			else
+	  		{
+				lat_Coord[0] = (pos[0] + pos[1] + pos[2]) * 0.3;
+				lat_Coord[1] = (pos[0] - pos[1] + pos[2]) * 0.3;
+			}
 
+		}
+
+	        else if(object_space_flag==1)
+		{
+			if(vertical_flag==1)
+	 		{ 
+				float_texture = tmp_a * 2.5;
+			}
+    			if(slant_flag==1)
+	 		{ 
+				float_texture=1.5*(tmp_a + tmp_b + tmp_c);
+			}
+	  		if(upright_lat_flag==0)
+	 		{
+				lat_Coord[0]=(tmp_a + 1) * 0.5;
+				lat_Coord[1]=(tmp_b + 1) * 0.5;
+			}
+			else
+	  		{
+				lat_Coord[0]=(tmp_a + tmp_b + tmp_c) * 0.3;
+				lat_Coord[1]=(tmp_a - tmp_b + tmp_c) * 0.3;
+			}
+
+		}
 	}
-
-	else if(object_space_flag==1)
-	{
-	if(vertical_flag==1)
-	  { float_texture=tmp_a*2.5;}
-    if(slant_flag==1)
-	  { float_texture=1.5*(tmp_a + tmp_b + tmp_c);}
-
-	  if(upright_lat_flag==0)
-	 {lat_Coord[0]=(tmp_a+1)*0.5;lat_Coord[1]=(tmp_b+1)*0.5;}
-	 else
-	  {lat_Coord[0]=(tmp_a+tmp_b+tmp_c)*0.3;lat_Coord[1]=(tmp_a-tmp_b+tmp_c)*0.3;}
-
-	}
-
-	}//line
+ 
 	else if(sphere_check_flag==1)
 	{
+		if(eye_space_flag==1)
+		{
+			if(vertical_flag==1)
+	  		{
+				texCoord[0]=(pos[0] + 1) * 0.5;
+				texCoord[1]=(pos[1] + 1) * 0.5;
+			}
+			else if(slant_flag==1)
+	  		{
+				texCoord[0]=(pos[0] + pos[1] + pos[2]) * 0.3;
+				texCoord[1]=(pos[0] - pos[1] + pos[2]) * 0.3;
+			}
 
-	if(eye_space_flag==1)
-	{
-	if(vertical_flag==1)
-	  {texCoord[0]=(pos[0]+1)*0.5;texCoord[1]=(pos[1]+1)*0.5;}
-	else if(slant_flag==1)
-	  {texCoord[0]=(pos[0]+pos[1]+pos[2])*0.3;texCoord[1]=(pos[0]-pos[1]+pos[2])*0.3;}
+			if(upright_lat_flag==1)
+	  		{
+				lat_Coord[0]=(pos[0] + 1) * 0.5;
+				lat_Coord[1]=(pos[1] + 1) * 0.5;
+			}
+			else
+	  		{
+				lat_Coord[0]=(pos[0] + pos[1] + pos[2]) * 0.3;
+				lat_Coord[1]=(pos[0] - pos[1] + pos[2]) * 0.3;
+			}
+		}
 
-	if(upright_lat_flag==1)
-	  {lat_Coord[0]=(pos[0]+1)*0.5;lat_Coord[1]=(pos[1]+1)*0.5;}
-	else
-	  {lat_Coord[0]=(pos[0]+pos[1]+pos[2])*0.3;lat_Coord[1]=(pos[0]-pos[1]+pos[2])*0.3;}
+		else if(object_space_flag==1)
+		{
+			if(vertical_flag==1)
+	  		{ 
+				texCoord[0]=(tmp_a + 1) * 0.5;
+				texCoord[1]=(tmp_b + 1) * 0.5;
+			}
+			else if(slant_flag==1)
+	  		{ 
+				texCoord[0]=(tmp_a + tmp_b + tmp_c) * 0.3;
+				texCoord[1]=(tmp_a - tmp_b + tmp_c) * 0.3;
+			}
+
+			if(upright_lat_flag==0)
+	 		{
+				lat_Coord[0]=(tmp_a + 1) * 0.5;
+				lat_Coord[1]=(tmp_b + 1) * 0.5;
+			}
+	 		else
+	  		{
+				lat_Coord[0]=(tmp_a + tmp_b + tmp_c) * 0.3;
+				lat_Coord[1]=(tmp_a - tmp_b + tmp_c) * 0.3;
+			}
+		}
+
 	}
-
-	else if(object_space_flag==1)
-	{
-	if(vertical_flag==1)
-	  { texCoord[0]=(tmp_a+1)*0.5;texCoord[1]=(tmp_b+1)*0.5;}
-	else if(slant_flag==1)
-	  { texCoord[0]=(tmp_a+tmp_b+tmp_c)*0.3;texCoord[1]=(tmp_a-tmp_b+tmp_c)*0.3;}
-
-	 if(upright_lat_flag==0)
-	 {lat_Coord[0]=(tmp_a+1)*0.5;lat_Coord[1]=(tmp_b+1)*0.5;}
-	 else
-	  {lat_Coord[0]=(tmp_a+tmp_b+tmp_c)*0.3;lat_Coord[1]=(tmp_a-tmp_b+tmp_c)*0.3;}
-	}
-
-	}//check
 	else
 	{
-	texCoord=vTexCoord;
+		texCoord=vTexCoord;
 	}
 
 
 	vec3 N = normalize(Normal_Matrix * vNormal);
-    vec4 global_light=vec4(1.0,1.0,1.0,1);
-	vec3 l_distant=vec3(0.1,0.0,-1.0);
+        vec4 global_light=vec4(1.0, 1.0, 1.0, 1);
+	vec3 l_distant=vec3(0.1, 0.0, -1.0);
 	vec4 ini_light_ambient=vec4( 0.0, 0.0, 0.0, 1.0 );
 	vec4 ini_light_diffuse=vec4( 0.8, 0.8, 0.8, 1.0 );
 	vec4 ini_light_specular=vec4( 0.2, 0.2, 0.2, 1.0 );
@@ -185,14 +239,14 @@ void main()
     /*--- To Do: Compute attenuation ---*/
     float attenuation = 1.0;
     vec3 tmp_cal_d = LightPosition.xyz - pos;
-    float cur_distance=length(tmp_cal_d);
+    float cur_distance= length(tmp_cal_d);
 
-    attenuation=1/(ConstAtt + LinearAtt*cur_distance + QuadAtt*cur_distance*cur_distance);
+    attenuation=1 /( ConstAtt + LinearAtt*cur_distance + QuadAtt*cur_distance*cur_distance);
 
  // Compute terms in the illumination equation
     vec4 ambient = input_light_ambient*ini_material_ambient;
     float d = max( dot(L, N), 0.0 );
-    vec4  diffuse = d * input_light_diffuse*ini_material_diffuse;
+    vec4  diffuse = d * input_light_diffuse * ini_material_diffuse;
     float s = pow( max(dot(N, H), 0.0), Shininess );
     vec4  specular = s * input_light_specular*ini_material_specular;
     if( dot(L, N) < 0.0 ) {
@@ -216,18 +270,18 @@ void main()
 
    if (spot_flag==1.0)
    {
-   color=ini_color+global_light*ini_material_ambient+color_add_spot;
+   	color=ini_color+global_light*ini_material_ambient+color_add_spot;
    }
    else
    {
-   color=ini_color+global_light*ini_material_ambient+color_add_point;
+   	color=ini_color+global_light*ini_material_ambient+color_add_point;
    }
 
    if (shade_flag == 0) {
 		vec4 vColor4 = vec4(vColor.r, vColor.g, vColor.b, 1.0);
 		if (shadow_semi_flag==1.0)
 		{
-		vColor4[3]=0.65;
+			vColor4[3]=0.65;
 		}
 		color = vColor4;
 	}
