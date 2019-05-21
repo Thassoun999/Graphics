@@ -8,20 +8,23 @@ File Name: "fshader53.glsl":
 
 in  vec4 color;
 in vec2 texCoord;
-in vec2 lat_Coord;
+in vec2 latticeCoordinate;
 in float fog_d;
 in float fog_f;
 
 in  float float_texture;
 
 out vec4 fColor;
+
+uniform int enable_lat;
+uniform int f_draw_shadow_lat;
+
+
 uniform sampler2D texture_2D;
 uniform sampler1D texture_1D;
 uniform int text_ground_flag;
 uniform int f_sphere_flag;
 uniform int f_sphere_check_flag;
-uniform int enable_lat;
-uniform int f_draw_shadow_lat;
 
 void main()
 {
@@ -37,8 +40,8 @@ if (f_sphere_flag==1 && text_ground_flag==0 )
 	tex_color=color * texture(texture_1D,float_texture);
 	if(enable_lat>0)
 	{
-		float s = lat_Coord[0];
-		float t = lat_Coord[1];
+		float s = latticeCoordinate[0];
+		float t = latticeCoordinate[1];
 		if(fract(4 * s) < 0.35 && fract(4 * s) > 0 && fract(4 * t) > 0 && fract(4 * t) < 0.35) discard;
 	}
 }
@@ -53,8 +56,8 @@ if(f_sphere_check_flag==1  && text_ground_flag==0)
 	tex_color= color * tmp_color;
 	if(enable_lat>0)
 	{
-		float s = lat_Coord[0];
-		float t = lat_Coord[1];
+		float s = latticeCoordinate[0];
+		float t = latticeCoordinate[1];
 		if(fract(4 * s) < 0.35 && fract(4 * s) > 0 && fract(4 * t)>0 && fract(4 * t) < 0.35) discard;
 	}
 }
@@ -63,8 +66,8 @@ if(f_draw_shadow_lat==1)
 {
 	if(enable_lat>0)
 	{
-		float s = lat_Coord[0];
-		float t = lat_Coord[1];
+		float s = latticeCoordinate[0];
+		float t = latticeCoordinate[1];
 		if(fract(4 * s) < 0.35 && fract(4 * s) > 0 && fract(4 * t) > 0 && fract(4 * t) < 0.35) discard;
 	}
 }
@@ -81,13 +84,13 @@ else if(fog_f == 2.0)
 }
 else if(fog_f == 3.0)
 { 
-	float x=1/exp(0.09*fog_d);
-	fColor=mix(tex_color,fog_color,1-x);
+	float x=1/exp(0.09 * fog_d);
+	fColor=mix(tex_color, fog_color, 1-x);
 }
 else if(fog_f==4.0)
 { 
-	float x=1/exp(0.09*0.09*fog_d*fog_d);
-	fColor=mix(tex_color,fog_color,1-x);
+	float x=1/exp(0.09 * 0.09 * fog_d * fog_d);
+	fColor=mix(tex_color, fog_color, 1-x);
 }
 else
 { 
