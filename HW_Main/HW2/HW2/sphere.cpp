@@ -122,6 +122,7 @@ point3 fireVector[300];
 point3 fireColor[300];
 
 //1 for point, 2 for spot
+//No more
 void set_point_or_spot_light(mat4 mv, int index) {
 	color4 light_ambient(0, 0, 0, 1.0);
 	color4 light_diffuse(1.0, 1.0, 1.0, 1.0);
